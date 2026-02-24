@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dakota — Sales Overview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* =============================================
+       RESET & BASE
+       ============================================= */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0B0F1A;
+      --bg-card: rgba(255,255,255,0.03);
+      --border-card: rgba(255,255,255,0.06);
+      --accent: #4FD1C5;
+      --accent-dim: rgba(79,209,197,0.15);
+      --accent-glow: rgba(79,209,197,0.25);
+      --red: #F56565;
+      --red-dim: rgba(245,101,101,0.15);
+      --text-primary: #FFFFFF;
+      --text-secondary: #E8EAF0;
+      --text-muted: #8B92A8;
+      --text-dim: #5A6178;
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text-secondary);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* =============================================
+       SLIDE ENGINE
+       ============================================= */
+    .deck {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 64px 80px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 400ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .slide-inner {
+      width: 100%;
+      max-width: 1100px;
+    }
+
+    /* Entrance animations */
+    .slide .anim {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 500ms cubic-bezier(0, 0, 0.2, 1),
+                  transform 500ms cubic-bezier(0, 0, 0.2, 1);
+    }
+
+    .slide.active .anim { opacity: 1; transform: translateY(0); }
+    .slide.active .anim.d1 { transition-delay: 100ms; }
+    .slide.active .anim.d2 { transition-delay: 200ms; }
+    .slide.active .anim.d3 { transition-delay: 300ms; }
+    .slide.active .anim.d4 { transition-delay: 400ms; }
+    .slide.active .anim.d5 { transition-delay: 500ms; }
+    .slide.active .anim.d6 { transition-delay: 600ms; }
+    .slide.active .anim.d7 { transition-delay: 700ms; }
+
+    /* =============================================
+       NAVIGATION
+       ============================================= */
+    .nav {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 100;
+      background: rgba(11,15,26,0.85);
+      backdrop-filter: blur(12px);
+      padding: 8px 16px;
+      border-radius: 9999px;
+      border: 1px solid var(--border-card);
+    }
+
+    .nav-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--text-dim);
+      cursor: pointer;
+      transition: all 250ms ease;
+      border: none;
+      padding: 0;
+    }
+
+    .nav-dot:hover { background: var(--text-muted); }
+    .nav-dot.active { background: var(--accent); width: 24px; border-radius: 4px; }
+
+    .nav-counter {
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-left: 8px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* =============================================
+       TYPOGRAPHY
+       ============================================= */
+    .eyebrow {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-size: 48px;
+      font-weight: 800;
+      line-height: 1.1;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      font-size: 40px;
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+
+    h3 {
+      font-size: 22px;
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--text-primary);
+    }
+
+    .subtitle {
+      font-size: 20px;
+      line-height: 1.5;
+      color: var(--text-muted);
+      max-width: 680px;
+    }
+
+    .stat-number {
+      font-size: 56px;
+      font-weight: 800;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+
+    .stat-number.accent { color: var(--accent); }
+
+    .stat-label {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    /* =============================================
+       COMPONENTS
+       ============================================= */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 16px;
+      padding: 32px;
+      transition: border-color 300ms ease;
+    }
+
+    .card:hover { border-color: rgba(255,255,255,0.12); }
+
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      background: var(--accent-dim);
+      color: var(--accent);
+    }
+
+    .badge.red {
+      background: var(--red-dim);
+      color: var(--red);
+    }
+
+    .icon-circle {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: var(--accent-dim);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      font-size: 20px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 32px;
+      background: var(--accent);
+      color: var(--bg);
+      font-weight: 700;
+      font-size: 16px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 200ms ease;
+    }
+
+    .btn-primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 32px;
+      background: transparent;
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border-card);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 200ms ease;
+    }
+
+    .btn-secondary:hover { border-color: rgba(255,255,255,0.2); }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+    .grid-2x3 { display: grid; grid-template-columns: 1fr 1fr 1fr; grid-template-rows: auto auto; gap: 20px; }
+
+    .stats-strip {
+      display: flex;
+      gap: 48px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .stats-strip .stat { text-align: center; }
+
+    .divider {
+      width: 48px;
+      height: 3px;
+      background: var(--accent);
+      border-radius: 2px;
+      margin: 24px 0;
+    }
+
+    .text-center { text-align: center; }
+    .mx-auto { margin-left: auto; margin-right: auto; }
+    .mt-8 { margin-top: 8px; }
+    .mt-12 { margin-top: 12px; }
+    .mt-16 { margin-top: 16px; }
+    .mt-24 { margin-top: 24px; }
+    .mt-32 { margin-top: 32px; }
+    .mt-40 { margin-top: 40px; }
+    .mt-48 { margin-top: 48px; }
+    .mb-8 { margin-bottom: 8px; }
+    .mb-16 { margin-bottom: 16px; }
+    .mb-24 { margin-bottom: 24px; }
+    .mb-32 { margin-bottom: 32px; }
+    .mb-48 { margin-bottom: 48px; }
+    .gap-16 { gap: 16px; }
+    .gap-32 { gap: 32px; }
+    .gap-48 { gap: 48px; }
+
+    /* Pain stats strip */
+    .pain-strip {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
+
+    .pain-stat {
+      text-align: center;
+      padding: 16px 24px;
+      background: var(--red-dim);
+      border: 1px solid rgba(245,101,101,0.2);
+      border-radius: 12px;
+    }
+
+    .pain-stat .num {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--red);
+    }
+
+    .pain-stat .label {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Capability pill row */
+    .cap-row {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .cap-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      width: 140px;
+    }
+
+    .cap-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(79,209,197,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+
+    .cap-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .cap-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    /* Testimonial */
+    .testimonial {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 16px;
+      padding: 28px 32px;
+      font-style: italic;
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      position: relative;
+    }
+
+    .testimonial::before {
+      content: '\201C';
+      position: absolute;
+      top: 12px;
+      left: 16px;
+      font-size: 48px;
+      color: var(--accent);
+      opacity: 0.3;
+      font-style: normal;
+      line-height: 1;
+    }
+
+    .testimonial .author {
+      font-style: normal;
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 12px;
+      font-weight: 500;
+    }
+
+    /* Timeline */
+    .timeline {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      margin-top: 32px;
+    }
+
+    .timeline-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .timeline-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .timeline-year {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .timeline-label {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .timeline-line {
+      width: 120px;
+      height: 2px;
+      background: linear-gradient(to right, var(--accent), rgba(79,209,197,0.3));
+      margin: 0 8px;
+      margin-bottom: 36px;
+    }
+
+    /* Steps flow */
+    .steps-flow {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .step-card {
+      flex: 1;
+      max-width: 280px;
+      text-align: center;
+    }
+
+    .step-num {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: var(--bg);
+      font-weight: 800;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+
+    .step-arrow {
+      font-size: 24px;
+      color: var(--text-dim);
+      margin-top: 12px;
+    }
+
+    /* Investor logos */
+    .investor-row {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .investor-name {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text-primary);
+      opacity: 0.7;
+    }
+
+    /* Customer logos */
+    .customer-row {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .customer-name {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    /* Compliance badge row */
+    .compliance-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .compliance-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      padding: 6px 14px;
+      border-radius: 9999px;
+    }
+
+    .compliance-badge .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    /* Diverging chart (slide 3) */
+    .diverge-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-top: 40px;
+    }
+
+    .diverge-col { text-align: center; }
+
+    .diverge-col h3 {
+      margin-bottom: 16px;
+      font-size: 18px;
+    }
+
+    .diverge-col.up h3 { color: var(--accent); }
+    .diverge-col.down h3 { color: var(--red); }
+
+    .diverge-col ul {
+      list-style: none;
+      text-align: left;
+      font-size: 15px;
+      line-height: 2;
+      color: var(--text-secondary);
+    }
+
+    .diverge-col ul li::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .diverge-col.up ul li::before { background: var(--accent); }
+    .diverge-col.down ul li::before { background: var(--red); }
+
+    /* Infra problem diagram */
+    .infra-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 16px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .infra-block {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .infra-block .icon {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .infra-block .name {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+
+    .infra-block .desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Feature card for platform deep-dive */
+    .feat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 12px;
+      padding: 24px;
+    }
+
+    .feat-card .feat-icon {
+      font-size: 24px;
+      margin-bottom: 12px;
+    }
+
+    .feat-card h4 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .feat-card p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Differentiator card */
+    .diff-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 16px;
+      padding: 32px;
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    .diff-card .diff-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(79,209,197,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .diff-card h3 {
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+
+    .diff-card p {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Use case card */
+    .uc-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 16px;
+      padding: 28px;
+    }
+
+    .uc-card .uc-icon {
+      font-size: 28px;
+      margin-bottom: 14px;
+    }
+
+    .uc-card h4 {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+    }
+
+    .uc-card p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+
+    .uc-card .uc-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    /* SVG curve for slide 3 */
+    .curve-svg {
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* Regulatory pillars */
+    .reg-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+
+    .reg-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .reg-card .reg-icon {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .reg-card h4 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+
+    .reg-card p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- =========================================
+       SLIDE 1 — COVER
+       ========================================= -->
+  <div class="slide active" data-slide="1">
+    <div class="slide-inner text-center">
+      <div class="eyebrow anim">Dakota</div>
+      <h1 class="anim d1" style="font-size:52px; max-width:800px; margin:0 auto 24px;">The financial infrastructure layer for the internet</h1>
+      <p class="subtitle anim d2 mx-auto">Regulated stablecoin infrastructure for fintechs and enterprises — move between dollars and stablecoins through a single API.</p>
+      <div class="stats-strip mt-48 anim d3">
+        <div class="stat">
+          <div class="stat-number accent">$3B+</div>
+          <div class="stat-label">Volume processed</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number accent">700+</div>
+          <div class="stat-label">Customers</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number accent">$16M</div>
+          <div class="stat-label">Raised</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================
+       SLIDE 2 — THE STABLECOIN MOMENT
+       ========================================= -->
+  <div class="slide" data-slide="2">
+    <div class="slide-inner text-center">
+      <div class="eyebrow anim">Market Context</div>
+      <h2 class="anim d1">The Stablecoin Moment</h2>
+      <p class="subtitle mx-auto anim d2">The shift from traditional rails to programmable money is already underway.</p>
+      <div class="stats-strip mt-48 anim d3" style="gap:64px;">
+        <div class="stat">
+          <div class="stat-number" style="font-size:64px;">$230B+</div>
+          <div class="stat-label" style="font-size:15px;">Stablecoin supply — all-time high</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number" style="font-size:64px;">$27.6T</div>
+          <div class="stat-label" style="font-size:15px;">Annual stablecoin volume — surpassing Visa + Mastercard</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number" style="font-size:64px;">70%</div>
+          <div class="stat-label" style="font-size:15px;">Of cross-border fintechs exploring stablecoin rails</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================
+       SLIDE 3 — WINNERS & LOSERS
+       ========================================= -->
+  <div class="slide" data-slide="3">
+    <div class="slide-inner text-center">
+      <div class="eyebrow anim">The Divergence</div>
+      <h2 class="anim d1">Two Paths Forward</h2>
+      <p class="subtitle mx-auto anim d2">Companies that embrace programmable money are pulling ahead. Those that wait are falling behind.</p>
+
+      <!-- SVG diverging curves -->
+      <div class="anim d3" style="margin-top:32px;">
+        <svg class="curve-svg" width="700" height="160" viewBox="0 0 700 160">
+          <!-- Teal rising curve -->
+          <path d="M 100,100 C 200,100 300,30 600,20" stroke="#4FD1C5" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <circle cx="600" cy="20" r="5" fill="#4FD1C5"/>
+          <!-- Red falling curve -->
+          <path d="M 100,100 C 200,100 300,130 600,150" stroke="#F56565" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="8,6"/>
+          <circle cx="600" cy="150" r="5" fill="#F56565"/>
+          <!-- Center dot -->
+          <circle cx="100" cy="100" r="6" fill="#8B92A8"/>
+          <text x="70" y="100" fill="#8B92A8" font-size="11" text-anchor="middle" font-family="Inter, sans-serif">Today</text>
+        </svg>
+      </div>
+
+      <div class="diverge-container anim d4">
+        <div class="diverge-col up">
+          <h3>Building with stablecoins</h3>
+          <ul>
+            <li>Instant global settlement</li>
+            <li>Lower cross-border costs</li>
+            <li>Programmable money flows</li>
+            <li>New revenue streams</li>
+          </ul>
+        </div>
+        <div class="diverge-col down">
+          <h3>Waiting on the sidelines</h3>
+          <ul>
+            <li>Slower time to market</li>
+            <li>Higher operational costs</li>
+            <li>Legacy rail dependencies</li>
+            <li>Competitive disadvantage</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================
+       SLIDE 4 — THE INFRASTRUCTURE PROBLEM
+       ========================================= -->
+  <div class="slide" data-slide="4">
+    <div class="slide-inner text-center">
+      <div class="eyebrow anim">The Problem</div>
+      <h2 class="anim d1">The Infrastructure Problem</h2>
+      <p class="subtitle mx-auto anim d2">Going live with stablecoins means stitching together banking, blockchain, compliance, and developer tools — all on your own.</p>
+
+      <div class="infra-grid mt-40 anim d3">
+        <div class="infra-block">
+          <div class="icon">&#x1F3E6;</div>
+          <div class="name">Banking</div>
+          <div class="desc">Bank partnerships, fiat rails, ACH/wire/SWIFT integrations</div>
+        </div>
+        <div class="infra-block">
+          <div class="icon">&#x26D3;</div>
+          <div class="name">Blockchain</div>
+          <div class="desc">Multi-chain support, custody, key management, smart contracts</div>
+        </div>
+        <div class="infra-block">
+          <div class="icon">&#x1F6E1;</div>
+          <div class="name">Compliance</div>
+          <div class="desc">KYB/AML, sanctions screening, transaction monitoring, licensing</div>
+        </div>
+        <div class="infra-block">
+          <div class="icon">&#x1F6E0;</div>
+          <div class="name">Developer Tools</div>
+          <div class="desc">APIs, SDKs, dashboards, webhooks, documentation</div>
+        </div>
+      </div>
+
+      <div class="pain-strip anim d4">
+        <div class="pain-stat">
+          <div class="num">12-24 mo</div>
+          <div class="label">To build in-house</div>
+        </div>
+        <div class="pain-stat">
+          <div class="num">10+ APIs</div>
+          <div class="label">To integrate</div>
+        </div>
+        <div class="pain-stat">
+          <div class="num">$2M+</div>
+          <div class="label">Upfront cost</div>
+        </div>
+        <div class="pain-stat">
+          <div class="num">3-5</div>
+          <div class="label">Vendors to manage</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================
+       SLIDE 5 — INTRODUCING DAKOTA
+       ========================================= -->
+  <div class="slide" data-slide="5">
+    <div class="slide-inner text-center">
+      <div class="eyebrow anim">The Solution</div>
+      <h2 class="anim d1">Introducing Dakota</h2>
+      <p class="subtitle mx-auto anim d2">A regulated stablecoin infrastructure platform that enables fintechs and enterprises to embed programmable global money movement through APIs — without becoming financial institutions themselves.</p>
+
+      <div class="cap-row mt-48 anim d3">
+        <div class="cap-item">
+          <div class="cap-icon">&#x1F50D;</div>
+          <div class="cap-name">Screen</div>
+          <div class="cap-desc">KYB, AML, sanctions &amp; risk checks</div>
+        </div>
+        <div class="cap-item">
+          <div class="cap-icon">&#x1F4E4;</div>
+          <div class="cap-name">Send</div>
+          <div class="cap-desc">Fiat &amp; stablecoin payouts globally</div>
+        </div>
+        <div class="cap-item">
+          <div class="cap-icon">&#x1F4E5;</div>
+          <div class="cap-name">Receive</div>
+          <div class="cap-desc">On-ramp from fiat to stablecoins</div>
+        </div>
+        <div class="cap-item">
+          <div class="cap-icon">&#x1F512;</div>
+          <div class="cap-name">Store</div>
+          <div class="cap-desc">Enterprise custody &amp; wallets</div>
+        </div>
+        <div class="cap-item">
+          <div class="cap-icon">&#x1F504;</div>
+          <div class="cap-name">Swap</div>
+          <div class="cap-desc">Mint, redeem &amp; convert stablecoins</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================
+       SLIDE 6 — PLATFORM DEEP-DIVE
+       ========================================= -->
+  <div class="slide" data-slide="6">
+    <div class="slide-inner">
+      <div class="text-center">
+        <div class="eyebrow anim">Platform</div>
+        <h2 class="anim d1">Built for Scale</h2>
+      </div>
+      <div class="grid-2x3 mt-32">
+        <div class="feat-card anim d2">
+          <div class="feat-icon">&#x2699;</div>
+          <h4>Orchestration Engine</h4>
+          <p>One API to route funds across fiat rails (ACH, wires, SWIFT) and on-chain transfers. Mint and redeem across DKUSD and major stablecoins.</p>
+        </div>
+        <div class="feat-card anim d3">
+          <div class="feat-icon">&#x1F6E1;</div>
+          <h4>Compliance-as-a-Service</h4>
+          <p>Automated KYB/CIP, sanctions and adverse media checks, transaction monitoring, and blockchain analytics — all built in.</p>
+        </div>
+        <div class="feat-card anim d3">
+          <div class="feat-icon">&#x1F512;</div>
+          <h4>Enterprise Custody</h4>
+          <p>Multi-sig and TEE controls, granular permissions, fund segregation. Hosted and self-custody models available.</p>
+        </div>
+        <div class="feat-card anim d4">
+          <div class="feat-icon">&#x1FA99;</div>
+          <h4>Stablecoin Issuance</h4>
+          <p>Issue fully reserved, USD-backed DKUSD or white-label stablecoins with 1:1 redemption for your own ecosystem.</p>
+        </div>
+        <div class="feat-card anim d4">
+          <div class="feat-icon">&#x1F4BB;</div>
+          <h4>Developer Experience</h4>
+          <p>Modern APIs, clear documentation, webhooks, and a clean operational model. Launch in weeks, not quarters.</p>
+        </div>
+        <div class="feat-card anim d5">
+          <div class="feat-icon">&#x1F4CA;</div>
+          <h4>Transparency &amp; Controls</h4>
+          <p>Reserve disclosures, planned monthly third-party attestations, and policy-driven freeze/hold controls.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================
+       SLIDE 7 — WHY DAKOTA (DIFFERENTIATORS)
+       ========================================= -->
+  <div class="slide" data-slide="7">
+    <div class="slide-inner">
+      <div class="text-center">
+        <div class="eyebrow anim">Differentiators</div>
+        <h2 class="anim d1">Why Dakota</h2>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:20px; margin-top:36px;">
+        <div class="diff-card anim d2">
+          <div class="diff-icon">&#x1F310;</div>
+          <div>
+            <h3>SWIFT on Day One</h3>
+            <p>Enterprise-grade access to the hardest payment rail to integrate. Global payments across banks and stablecoins from day one — no waiting months for bank partnerships.</p>
+          </div>
+        </div>
+        <div class="diff-card anim d3">
+          <div class="diff-icon">&#x26A1;</div>
+          <div>
+            <h3>&lt;24-Hour Onboarding</h3>
+            <p>Customers go live in hours, not weeks. Automated KYB, AML, and compliance built in. Turns compliance from a blocker into a competitive advantage.</p>
+          </div>
+        </div>
+        <div class="diff-card anim d4">
+          <div class="diff-icon">&#x1F916;</div>
+          <div>
+            <h3>AI-Powered Infrastructure</h3>
+            <p>Embedded AI for transaction insights, anomaly detection, and real-time reporting. FinOps agents and treasury management agents coming soon.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================
+       SLIDE 8 — USE CASES
+       ========================================= -->
+  <div class="slide" data-slide="8">
+    <div class="slide-inner">
+      <div class="text-center">
+        <div class="eyebrow anim">Use Cases</div>
+        <h2 class="anim d1">Built for Your Business</h2>
+      </div>
+      <div class="grid-3 mt-32">
+        <div class="uc-card anim d2">
+          <div class="uc-icon">&#x1F4B8;</div>
+          <h4>Global Payouts &amp; Payroll</h4>
+          <p>Disburse funds to contractors, creators, and remote teams in stablecoins — instantly, globally, with full compliance.</p>
+          <div class="uc-badges">
+            <span class="badge">HR / Payroll</span>
+            <span class="badge">Fintechs</span>
+          </div>
+        </div>
+        <div class="uc-card anim d3">
+          <div class="uc-icon">&#x1F30D;</div>
+          <h4>Cross-Border Payments</h4>
+          <p>Convert between fiat and stablecoins for faster, cheaper international transfers — without multiple bank integrations.</p>
+          <div class="uc-badges">
+            <span class="badge">PSPs</span>
+            <span class="badge">Fintechs</span>
+          </div>
+        </div>
+        <div class="uc-card anim d4">
+          <div class="uc-icon">&#x1F4F1;</div>
+          <h4>Embedded Finance &amp; Wallets</h4>
+          <p>Embed custody and compliance rails to offer digital dollar accounts, multi-chain wallets, or on/off ramp experiences.</p>
+          <div class="uc-badges">
+            <span class="badge">Crypto-Native</span>
+            <span class="badge">Neobanks</span>
+          </div>
+        </div>
+      </div>
+      <p class="text-center mt-24 anim d5" style="font-size:14px; color:var(--text-dim);">Also: platform treasury, white-label stablecoin programs, institutional liquidity management</p>
+    </div>
+  </div>
+
+  <!-- =========================================
+       SLIDE 9 — TRACTION
+       ========================================= -->
+  <div class="slide" data-slide="9">
+    <div class="slide-inner text-center">
+      <div class="eyebrow anim">Traction</div>
+      <h2 class="anim d1">Proven at Scale</h2>
+
+      <div class="stats-strip mt-40 anim d2" style="gap:56px;">
+        <div class="stat">
+          <div class="stat-number accent" style="font-size:52px;">$3B+</div>
+          <div class="stat-label">Volume processed</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number accent" style="font-size:52px;">700+</div>
+          <div class="stat-label">Customers</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number accent" style="font-size:52px;">$16M</div>
+          <div class="stat-label">Raised</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number accent" style="font-size:52px;">20+</div>
+          <div class="stat-label">Team members</div>
+        </div>
+      </div>
+
+      <div class="customer-row mt-40 anim d3">
+        <span class="customer-name">Monad</span>
+        <span style="color:var(--text-dim);">&bull;</span>
+        <span class="customer-name">BRLA</span>
+        <span style="color:var(--text-dim);">&bull;</span>
+        <span class="customer-name">Webslinger</span>
+      </div>
+
+      <div class="grid-2 mt-40" style="max-width:800px; margin-left:auto; margin-right:auto;">
+        <div class="testimonial anim d4">
+          &ldquo;Dakota&rsquo;s infrastructure let us go live with stablecoin payouts in under a week. We&rsquo;d still be negotiating bank partnerships without them.&rdquo;
+          <div class="author">— Head of Ops, Series B Fintech</div>
+        </div>
+        <div class="testimonial anim d5">
+          &ldquo;The compliance-as-a-service layer alone saved us six months of build time and two full-time hires.&rdquo;
+          <div class="author">— CTO, Global Payments Platform</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================
+       SLIDE 10 — REGULATORY FOUNDATION
+       ========================================= -->
+  <div class="slide" data-slide="10">
+    <div class="slide-inner text-center">
+      <div class="eyebrow anim">Trust &amp; Compliance</div>
+      <h2 class="anim d1">Regulatory Foundation</h2>
+      <p class="subtitle mx-auto anim d2">Built from operating a real business banking product, with $100M+ in stablecoin supply experience.</p>
+
+      <div class="reg-grid mt-40 anim d3">
+        <div class="reg-card">
+          <div class="reg-icon">&#x1F1FA;&#x1F1F8;</div>
+          <h4>U.S. MSB</h4>
+          <p>Registered Money Services Business with active state Money Transmitter Licenses</p>
+        </div>
+        <div class="reg-card">
+          <div class="reg-icon">&#x1F3DB;</div>
+          <h4>State MTLs</h4>
+          <p>Active money transmitter licenses across key U.S. states</p>
+        </div>
+        <div class="reg-card">
+          <div class="reg-icon">&#x1F1EA;&#x1F1FA;</div>
+          <h4>European Expansion</h4>
+          <p>Actively pursuing EMI and CASP licenses for EU operations</p>
+        </div>
+      </div>
+
+      <div class="compliance-badges anim d4">
+        <div class="compliance-badge"><span class="dot"></span>Programmatic KYB</div>
+        <div class="compliance-badge"><span class="dot"></span>AML Screening</div>
+        <div class="compliance-badge"><span class="dot"></span>Transaction Monitoring</div>
+        <div class="compliance-badge"><span class="dot"></span>Sanctions Checks</div>
+        <div class="compliance-badge"><span class="dot"></span>Blockchain Analytics</div>
+        <div class="compliance-badge"><span class="dot"></span>Risk Controls</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================
+       SLIDE 11 — INVESTORS & TIMELINE
+       ========================================= -->
+  <div class="slide" data-slide="11">
+    <div class="slide-inner text-center">
+      <div class="eyebrow anim">Backed By</div>
+      <h2 class="anim d1">Investors</h2>
+
+      <div class="investor-row mt-40 anim d2">
+        <span class="investor-name">CoinFund</span>
+        <span class="investor-name">6th Man Ventures</span>
+        <span class="investor-name">Triton</span>
+      </div>
+
+      <div class="anim d3">
+        <div class="timeline mt-48">
+          <div class="timeline-node">
+            <div class="timeline-dot"></div>
+            <div class="timeline-year">2022</div>
+            <div class="timeline-label">Founded</div>
+          </div>
+          <div class="timeline-line"></div>
+          <div class="timeline-node">
+            <div class="timeline-dot"></div>
+            <div class="timeline-year">2023</div>
+            <div class="timeline-label">First customer live</div>
+          </div>
+          <div class="timeline-line"></div>
+          <div class="timeline-node">
+            <div class="timeline-dot"></div>
+            <div class="timeline-year">2025</div>
+            <div class="timeline-label">$3B+ processed, 700+ clients</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================
+       SLIDE 12 — GETTING STARTED
+       ========================================= -->
+  <div class="slide" data-slide="12">
+    <div class="slide-inner text-center">
+      <div class="eyebrow anim">Getting Started</div>
+      <h2 class="anim d1">Go Live in Three Steps</h2>
+      <p class="subtitle mx-auto anim d2">From first call to production in hours — not months.</p>
+
+      <div class="steps-flow mt-48">
+        <div class="step-card anim d3">
+          <div class="step-num">1</div>
+          <h3>Connect</h3>
+          <p class="mt-8" style="font-size:15px; color:var(--text-muted); line-height:1.6;">Schedule a walkthrough with our team to scope your integration and requirements.</p>
+        </div>
+        <div class="step-arrow anim d3">&#x2192;</div>
+        <div class="step-card anim d4">
+          <div class="step-num">2</div>
+          <h3>Integrate</h3>
+          <p class="mt-8" style="font-size:15px; color:var(--text-muted); line-height:1.6;">Onboard in &lt;24 hours with automated KYB, compliance, and API access.</p>
+        </div>
+        <div class="step-arrow anim d4">&#x2192;</div>
+        <div class="step-card anim d5">
+          <div class="step-num">3</div>
+          <h3>Launch</h3>
+          <p class="mt-8" style="font-size:15px; color:var(--text-muted); line-height:1.6;">Go live with production-grade stablecoin infrastructure — custody, compliance, and rails included.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================
+       SLIDE 13 — CTA
+       ========================================= -->
+  <div class="slide" data-slide="13">
+    <div class="slide-inner text-center">
+      <div class="anim">
+        <h1 style="font-size:44px; max-width:700px; margin:0 auto 16px;">Ready to move money at the speed of the internet?</h1>
+        <p class="subtitle mx-auto" style="margin-bottom:40px;">Dakota gives you regulated stablecoin infrastructure so you can focus on building your product.</p>
+      </div>
+      <div class="anim d1" style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+        <a class="btn-primary" href="#">Schedule a Demo &rarr;</a>
+        <a class="btn-secondary" href="#">View Documentation</a>
+      </div>
+      <div class="anim d2 mt-48" style="color:var(--text-dim); font-size:14px;">
+        <p style="margin-bottom:4px;">sales@dakota.com</p>
+        <p>dakota.com</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Navigation dots -->
+<nav class="nav" id="nav"></nav>
+
+<script>
+  (function() {
+    const TOTAL = 13;
+    let current = 1;
+
+    const deck = document.getElementById('deck');
+    const nav = document.getElementById('nav');
+    const slides = deck.querySelectorAll('.slide');
+
+    // Build nav dots + counter
+    for (let i = 1; i <= TOTAL; i++) {
+      const dot = document.createElement('button');
+      dot.className = 'nav-dot' + (i === 1 ? ' active' : '');
+      dot.dataset.slide = i;
+      dot.setAttribute('aria-label', 'Go to slide ' + i);
+      dot.addEventListener('click', () => goTo(i));
+      nav.appendChild(dot);
+    }
+    const counter = document.createElement('span');
+    counter.className = 'nav-counter';
+    counter.textContent = '1 / ' + TOTAL;
+    nav.appendChild(counter);
+
+    function goTo(n) {
+      if (n < 1 || n > TOTAL || n === current) return;
+      slides.forEach(s => s.classList.remove('active'));
+      const target = deck.querySelector('[data-slide="' + n + '"]');
+      if (target) target.classList.add('active');
+
+      nav.querySelectorAll('.nav-dot').forEach(d => {
+        d.classList.toggle('active', +d.dataset.slide === n);
+      });
+      counter.textContent = n + ' / ' + TOTAL;
+      current = n;
+      history.replaceState(null, '', '#slide-' + n);
+    }
+
+    function next() { goTo(current + 1); }
+    function prev() { goTo(current - 1); }
+
+    // Keyboard
+    document.addEventListener('keydown', e => {
+      switch (e.key) {
+        case 'ArrowRight':
+        case 'ArrowDown':
+        case ' ':
+        case 'PageDown':
+          e.preventDefault(); next(); break;
+        case 'ArrowLeft':
+        case 'ArrowUp':
+        case 'PageUp':
+          e.preventDefault(); prev(); break;
+        case 'Home':
+          e.preventDefault(); goTo(1); break;
+        case 'End':
+          e.preventDefault(); goTo(TOTAL); break;
+      }
+    });
+
+    // Click navigation (right 70% = next, left 30% = prev)
+    deck.addEventListener('click', e => {
+      if (e.target.closest('.nav') || e.target.closest('a') || e.target.closest('button')) return;
+      const x = e.clientX / window.innerWidth;
+      x < 0.3 ? prev() : next();
+    });
+
+    // Hash routing
+    function readHash() {
+      const m = location.hash.match(/^#slide-(\d+)$/);
+      if (m) goTo(+m[1]);
+    }
+    readHash();
+    window.addEventListener('hashchange', readHash);
+  })();
+</script>
+</body>
+</html>
