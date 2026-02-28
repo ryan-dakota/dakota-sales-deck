@@ -319,6 +319,22 @@
     .diff-card h4 { margin-bottom: 8px; }
     .diff-card p { font-size: 15px; color: var(--muted); line-height: 1.6; }
 
+    /* ── Numbered list ── */
+    .numbered-list { margin-top: 48px; max-width: 1100px; }
+    .numbered-item {
+      display: grid; grid-template-columns: 80px 1fr;
+      gap: 24px; align-items: start;
+      padding: 32px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .numbered-item:first-child { border-top: 1px solid var(--border); }
+    .num {
+      font-family: var(--font-heading);
+      font-size: 48px; font-weight: 400; color: var(--white); line-height: 1;
+    }
+    .numbered-item h4 { margin-bottom: 8px; }
+    .numbered-item p { font-size: 15px; line-height: 1.6; }
+
     /* ── Responsive ── */
     @media (max-width: 900px) {
       .slide { padding: 40px 32px; }
@@ -440,15 +456,15 @@
         </div>
         <div class="cap-card">
           <div class="cap-name">Store</div>
-          <div class="cap-desc">Enterprise custody with multi-sig, TEE controls</div>
+          <div class="cap-desc">Secure funds with enterprise-grade custody</div>
         </div>
         <div class="cap-card">
           <div class="cap-name">Create</div>
-          <div class="cap-desc">Issue white-label stablecoins with full reserve backing</div>
+          <div class="cap-desc">Launch your own branded stablecoin and own the customer experience</div>
         </div>
         <div class="cap-card">
           <div class="cap-name">Earn</div>
-          <div class="cap-desc">Increase revenue by earning rewards on reserves</div>
+          <div class="cap-desc">Turn idle reserves into a revenue stream for your business</div>
         </div>
       </div>
     </div>
@@ -465,27 +481,27 @@
       <div class="grid23 anim d3" style="border: 1px solid var(--border);">
         <div class="card" style="border-radius:0; border: none; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);">
           <h4>Orchestration Engine</h4>
-          <p style="color:var(--muted); margin-top:8px;">One API to route funds across fiat rails (ACH, wires, SWIFT) and on-chain transfers.</p>
+          <p style="color:var(--muted); margin-top:8px;">Route funds across fiat and on-chain rails with one API.</p>
         </div>
         <div class="card" style="border-radius:0; border: none; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);">
           <h4>Compliance-as-a-Service</h4>
-          <p style="color:var(--muted); margin-top:8px;">Programmatic KYB/CIP, sanctions screening, transaction monitoring, and blockchain analytics.</p>
+          <p style="color:var(--muted); margin-top:8px;">KYB, sanctions screening, transaction monitoring, and analytics built in.</p>
         </div>
         <div class="card" style="border-radius:0; border: none; border-bottom: 1px solid var(--border);">
           <h4>Enterprise Custody</h4>
-          <p style="color:var(--muted); margin-top:8px;">Multi-sig and TEE controls, granular permissions, segregated accounts.</p>
+          <p style="color:var(--muted); margin-top:8px;">Multi-sig controls, granular permissions, segregated accounts.</p>
         </div>
         <div class="card" style="border-radius:0; border: none; border-right: 1px solid var(--border);">
           <h4>Stablecoin Issuance</h4>
-          <p style="color:var(--muted); margin-top:8px;">Issue fully reserved DKUSD or white-label stablecoins with 1:1 redemption.</p>
+          <p style="color:var(--muted); margin-top:8px;">White-label stablecoins with full reserve backing.</p>
         </div>
         <div class="card" style="border-radius:0; border: none; border-right: 1px solid var(--border);">
           <h4>Developer Experience</h4>
-          <p style="color:var(--muted); margin-top:8px;">Modern REST APIs, clear docs, webhooks, SDKs. Launch in weeks, not quarters.</p>
+          <p style="color:var(--muted); margin-top:8px;">REST APIs, webhooks, SDKs. Launch in weeks.</p>
         </div>
         <div class="card" style="border-radius:0; border: none;">
           <h4>Transparency &amp; Controls</h4>
-          <p style="color:var(--muted); margin-top:8px;">Reserve disclosures, attestations, RBAC, MFA, encryption, policy-driven controls.</p>
+          <p style="color:var(--muted); margin-top:8px;">Reserve attestations, RBAC, MFA, and policy-driven controls.</p>
         </div>
       </div>
     </div>
@@ -495,27 +511,29 @@
   <div class="slide" id="slide-6">
     <div class="slide-inner">
       <div class="center">
-        <div class="eyebrow anim">Differentiation</div>
-        <h2 class="anim d1">Why Dakota.</h2>
-        <p class="sub mx-auto anim d2">Three capabilities that set Dakota apart.</p>
+        <div class="eyebrow anim">What makes Dakota different?</div>
+        <h2 class="anim d1">Next-gen stablecoin platform<br>for modern finance.</h2>
       </div>
-      <div class="diff-cards">
-        <div class="diff-card anim d3">
+      <div class="numbered-list anim d3">
+        <div class="numbered-item">
+          <div class="num">01</div>
           <div>
             <h4>SWIFT on Day One</h4>
-            <p>Enterprise-grade access to the hardest payment rail to integrate. Global payments across banks and stablecoins from day one.</p>
+            <p style="color:var(--muted);">Enterprise-grade access to the hardest payment rail to integrate. Global payments from day one.</p>
           </div>
         </div>
-        <div class="diff-card anim d4">
+        <div class="numbered-item">
+          <div class="num">02</div>
           <div>
             <h4>&lt;24-Hour Onboarding</h4>
-            <p>Customers go live in hours, not weeks. Automated KYB, AML, and compliance built in. Compliance becomes a competitive advantage.</p>
+            <p style="color:var(--muted);">Go live in hours, not weeks. Agentic SDKs, streamlined onboarding, and compliance built-in.</p>
           </div>
         </div>
-        <div class="diff-card anim d5">
+        <div class="numbered-item">
+          <div class="num">03</div>
           <div>
             <h4>AI-Powered Infrastructure</h4>
-            <p>Embedded AI for transaction insights, anomaly detection, and real-time reporting. FinOps agents and treasury management coming soon.</p>
+            <p style="color:var(--muted);">AI analytics, MCP server, and primitives to build and use finance agents with strong guardrails.</p>
           </div>
         </div>
       </div>
@@ -531,11 +549,11 @@
       </div>
       <div class="grid3 anim d2" style="margin-top: 32px; border: 1px solid var(--border);">
         <div class="card" style="border-radius:0; border:none; border-right: 1px solid var(--border);">
-          <h4>Global Payouts &amp; Payroll</h4>
-          <p style="color:var(--muted); margin-top:8px; line-height:1.6;">Disburse funds in stablecoins globally — reaching contractors and remote teams instantly with full compliance.</p>
+          <h4>Embedded Finance</h4>
+          <p style="color:var(--muted); margin-top:8px; line-height:1.6;">Embed custody and compliance rails to offer digital dollar accounts and wallets in weeks.</p>
           <div class="tags">
-            <span class="badge">HR / Payroll</span>
-            <span class="badge">Fintechs</span>
+            <span class="badge">Crypto-native</span>
+            <span class="badge">Neobanks</span>
           </div>
         </div>
         <div class="card" style="border-radius:0; border:none; border-right: 1px solid var(--border);">
@@ -547,52 +565,26 @@
           </div>
         </div>
         <div class="card" style="border-radius:0; border:none;">
-          <h4>Embedded Finance</h4>
-          <p style="color:var(--muted); margin-top:8px; line-height:1.6;">Embed custody and compliance rails to offer digital dollar accounts and wallets in weeks.</p>
+          <h4>Global Payouts &amp; Payroll</h4>
+          <p style="color:var(--muted); margin-top:8px; line-height:1.6;">Pay contractors and remote teams instantly in stablecoins, fully compliant.</p>
           <div class="tags">
-            <span class="badge">Crypto-native</span>
-            <span class="badge">Neobanks</span>
+            <span class="badge">HR / Payroll</span>
+            <span class="badge">Fintechs</span>
           </div>
         </div>
       </div>
-      <p class="anim d3 center" style="margin-top: 24px; color: var(--dim); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;">Also: Platform Treasury &middot; White-Label Stablecoins &middot; Institutional Liquidity</p>
+      <p class="anim d3 center" style="margin-top: 24px; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;">Also: Platform Treasury &middot; White-Label Stablecoins &middot; Institutional Liquidity</p>
     </div>
   </div>
 
-  <!-- SLIDE 9: TRACTION -->
+  <!-- SLIDE 9: CUSTOMERS -->
   <div class="slide" id="slide-8">
     <div class="slide-inner">
       <div class="center">
-        <div class="eyebrow anim">Traction</div>
-        <h2 class="anim d1">Proven at scale.</h2>
+        <div class="eyebrow anim">Our Customers</div>
+        <h2 class="anim d1">Hundreds of companies trust Dakota<br>to move billions in volume.</h2>
       </div>
-      <div class="stats-strip anim d2" style="margin-top: 32px;">
-        <div class="stats-item">
-          <div class="stat-value" style="font-size:56px;">$3B+</div>
-          <div class="stat-label">Volume processed</div>
-        </div>
-        <div class="stats-item">
-          <div class="stat-value" style="font-size:56px;">700+</div>
-          <div class="stat-label">Customers</div>
-        </div>
-        <div class="stats-item">
-          <div class="stat-value" style="font-size:56px;">$16M</div>
-          <div class="stat-label">Raised</div>
-        </div>
-        <div class="stats-item">
-          <div class="stat-value" style="font-size:56px;">20+</div>
-          <div class="stat-label">Team members</div>
-        </div>
-      </div>
-      <div class="center anim d3" style="margin-top: 32px;">
-        <p style="color:var(--muted); font-size:11px; margin-bottom:16px; text-transform:uppercase; letter-spacing:0.08em;">Trusted by</p>
-        <div class="investor-row" style="margin-top: 0;">
-          <span class="investor-name">Monad</span>
-          <span class="investor-name">BRLA</span>
-          <span class="investor-name">Webslinger</span>
-        </div>
-      </div>
-      <div class="grid2 anim d4" style="margin-top: 32px; gap: 1px;">
+      <div class="grid2 anim d2" style="margin-top: 40px; gap: 1px;">
         <div class="testimonial">
           Dakota's infrastructure allowed us to go live with stablecoin payouts in under a week. Their compliance layer saved us months of work.
           <cite>— Head of Engineering, Series B Fintech</cite>
@@ -600,6 +592,16 @@
         <div class="testimonial">
           We evaluated building in-house vs. using Dakota. The decision was obvious — they handle the complexity so we can focus on our product.
           <cite>— CEO, Cross-Border Payments Platform</cite>
+        </div>
+      </div>
+      <div class="center anim d3" style="margin-top: 40px;">
+        <p style="color:var(--muted); font-size:11px; margin-bottom:16px; text-transform:uppercase; letter-spacing:0.08em;">Trusted by</p>
+        <div class="investor-row" style="margin-top: 0;">
+          <span class="investor-name">Monad</span>
+          <span class="investor-name">BRLA</span>
+          <span class="investor-name">Webslinger</span>
+          <span class="investor-name">Tempo</span>
+          <span class="investor-name">Eco</span>
         </div>
       </div>
     </div>
