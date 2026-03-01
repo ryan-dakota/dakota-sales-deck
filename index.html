@@ -91,7 +91,7 @@
     }
     p {
       font-family: var(--font-body);
-      font-size: 16px; line-height: 1.7; color: var(--text);
+      font-size: 16px; line-height: 1.7; color: var(--muted);
     }
     .sub {
       font-family: var(--font-body);
@@ -184,7 +184,7 @@
     /* ── Capability row ── */
     .cap-row { display: flex; gap: 0; margin-top: 40px; border: 1px solid var(--border); }
     .cap-card {
-      flex: 1; text-align: center; padding: 28px 16px;
+      flex: 1; text-align: center; padding: 48px 24px;
       border-right: 1px solid var(--border);
     }
     .cap-card:last-child { border-right: none; }
@@ -194,7 +194,7 @@
       font-size: 14px; font-weight: 600; color: var(--white); margin-bottom: 8px;
       text-transform: uppercase; letter-spacing: 0.06em;
     }
-    .cap-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+    .cap-desc { font-size: 14px; color: var(--muted); line-height: 1.5; }
 
     /* ── Winners/Losers ── */
     .diverge { display: flex; gap: 1px; align-items: stretch; margin-top: 40px; }
@@ -251,7 +251,7 @@
     .step:last-child { border-right: none; }
     .step-num {
       font-family: var(--font-heading);
-      font-size: 38px; font-weight: 400; color: var(--white);
+      font-size: 48px; font-weight: 400; color: var(--white);
       margin-bottom: 16px;
     }
     .step-arrow {
@@ -283,7 +283,7 @@
     /* ── Infra Diagram ── */
     .infra-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; margin-top: 32px; border: 1px solid var(--border); }
     .infra-box {
-      padding: 24px; text-align: center;
+      padding: 40px 24px; text-align: center;
       border: none; background: var(--bg-card);
     }
     .infra-icon { font-size: 24px; margin-bottom: 8px; }
@@ -317,23 +317,32 @@
     }
     .diff-card .icon-box { flex-shrink: 0; }
     .diff-card h4 { margin-bottom: 8px; }
-    .diff-card p { font-size: 15px; color: var(--muted); line-height: 1.6; }
+    .diff-card p { font-size: 16px; line-height: 1.6; }
 
-    /* ── Numbered list ── */
-    .numbered-list { margin-top: 48px; max-width: 1100px; }
-    .numbered-item {
-      display: grid; grid-template-columns: 80px 1fr;
-      gap: 24px; align-items: start;
-      padding: 32px 0;
-      border-bottom: 1px solid var(--border);
+    /* ── CTA list ── */
+    .cta-list { list-style: none; margin-bottom: 28px; }
+    .cta-list li {
+      font-size: 14px; padding: 6px 0 6px 20px; position: relative;
     }
-    .numbered-item:first-child { border-top: 1px solid var(--border); }
-    .num {
-      font-family: var(--font-heading);
-      font-size: 48px; font-weight: 400; color: var(--white); line-height: 1;
+    .cta-list li::before {
+      content: '\2713'; position: absolute; left: 0; color: var(--muted);
     }
-    .numbered-item h4 { margin-bottom: 8px; }
-    .numbered-item p { font-size: 15px; line-height: 1.6; }
+
+    /* ── Diff grid ── */
+    .diff-grid {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      gap: 0; margin-top: 40px;
+      border: 1px solid var(--border);
+    }
+    .diff-grid-card {
+      padding: 40px 28px;
+      background: var(--bg-card);
+      border-right: 1px solid var(--border);
+    }
+    .diff-grid-card:last-child { border-right: none; }
+    .diff-grid-card .icon-box { margin-bottom: 16px; }
+    .diff-grid-card h4 { margin-bottom: 10px; }
+    .diff-grid-card p { font-size: 14px; line-height: 1.6; }
 
     /* ── Responsive ── */
     @media (max-width: 900px) {
@@ -394,7 +403,7 @@
           <div class="stat-label">Cross-border remittances via stablecoins by 2027</div>
         </div>
       </div>
-      <p class="anim d3" style="margin-top: 32px; color: var(--muted); font-size: 14px; letter-spacing: 0.03em;">Fintechs, payment providers, and enterprises are racing to adopt stablecoin rails. The question isn't <em>if</em> — it's <em>how fast</em>.</p>
+      <p class="anim d3" style="margin-top: 32px; font-size: 14px; letter-spacing: 0.03em;">Fintechs, payment providers, and enterprises are racing to adopt stablecoin rails. The question isn't <em>if</em> — it's <em>how fast</em>.</p>
     </div>
   </div>
 
@@ -481,27 +490,27 @@
       <div class="grid23 anim d3" style="border: 1px solid var(--border);">
         <div class="card" style="border-radius:0; border: none; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);">
           <h4>Orchestration Engine</h4>
-          <p style="color:var(--muted); margin-top:8px;">Route funds across fiat and on-chain rails with one API.</p>
+          <p style="margin-top:8px;">Route funds across fiat and on-chain rails with one API.</p>
         </div>
         <div class="card" style="border-radius:0; border: none; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);">
           <h4>Compliance-as-a-Service</h4>
-          <p style="color:var(--muted); margin-top:8px;">KYB, sanctions screening, transaction monitoring, and analytics built in.</p>
+          <p style="margin-top:8px;">KYB, sanctions screening, transaction monitoring, and analytics built in.</p>
         </div>
         <div class="card" style="border-radius:0; border: none; border-bottom: 1px solid var(--border);">
           <h4>Enterprise Custody</h4>
-          <p style="color:var(--muted); margin-top:8px;">Multi-sig controls, granular permissions, segregated accounts.</p>
+          <p style="margin-top:8px;">Multi-sig controls, granular permissions, segregated accounts.</p>
         </div>
         <div class="card" style="border-radius:0; border: none; border-right: 1px solid var(--border);">
           <h4>Stablecoin Issuance</h4>
-          <p style="color:var(--muted); margin-top:8px;">White-label stablecoins with full reserve backing.</p>
+          <p style="margin-top:8px;">White-label stablecoins with full reserve backing.</p>
         </div>
         <div class="card" style="border-radius:0; border: none; border-right: 1px solid var(--border);">
           <h4>Developer Experience</h4>
-          <p style="color:var(--muted); margin-top:8px;">REST APIs, webhooks, SDKs. Launch in weeks.</p>
+          <p style="margin-top:8px;">REST APIs, webhooks, SDKs. Launch in weeks.</p>
         </div>
         <div class="card" style="border-radius:0; border: none;">
           <h4>Transparency &amp; Controls</h4>
-          <p style="color:var(--muted); margin-top:8px;">Reserve attestations, RBAC, MFA, and policy-driven controls.</p>
+          <p style="margin-top:8px;">Reserve attestations, RBAC, MFA, and policy-driven controls.</p>
         </div>
       </div>
     </div>
@@ -514,27 +523,21 @@
         <div class="eyebrow anim">What makes Dakota different?</div>
         <h2 class="anim d1">Next-gen stablecoin platform<br>for modern finance.</h2>
       </div>
-      <div class="numbered-list anim d3">
-        <div class="numbered-item">
-          <div class="num">01</div>
-          <div>
-            <h4>SWIFT on Day One</h4>
-            <p style="color:var(--muted);">Enterprise-grade access to the hardest payment rail to integrate. Global payments from day one.</p>
-          </div>
+      <div class="diff-grid anim d3">
+        <div class="diff-grid-card">
+          <div class="icon-box">&#9889;</div>
+          <h4>SWIFT on Day One</h4>
+          <p>Enterprise-grade access to the hardest payment rail to integrate. Global payments from day one.</p>
         </div>
-        <div class="numbered-item">
-          <div class="num">02</div>
-          <div>
-            <h4>&lt;24-Hour Onboarding</h4>
-            <p style="color:var(--muted);">Go live in hours, not weeks. Agentic SDKs, streamlined onboarding, and compliance built-in.</p>
-          </div>
+        <div class="diff-grid-card">
+          <div class="icon-box">&#9201;</div>
+          <h4>&lt;24-Hour Onboarding</h4>
+          <p>Go live in hours, not weeks. Agentic SDKs, streamlined onboarding, and compliance built-in.</p>
         </div>
-        <div class="numbered-item">
-          <div class="num">03</div>
-          <div>
-            <h4>AI-Powered Infrastructure</h4>
-            <p style="color:var(--muted);">AI analytics, MCP server, and primitives to build and use finance agents with strong guardrails.</p>
-          </div>
+        <div class="diff-grid-card">
+          <div class="icon-box">&#9670;</div>
+          <h4>AI-Powered Infrastructure</h4>
+          <p>AI analytics, MCP server, and primitives to build and use finance agents with strong guardrails.</p>
         </div>
       </div>
     </div>
@@ -550,7 +553,7 @@
       <div class="grid3 anim d2" style="margin-top: 32px; border: 1px solid var(--border);">
         <div class="card" style="border-radius:0; border:none; border-right: 1px solid var(--border);">
           <h4>Embedded Finance</h4>
-          <p style="color:var(--muted); margin-top:8px; line-height:1.6;">Embed custody and compliance rails to offer digital dollar accounts and wallets in weeks.</p>
+          <p style="margin-top:8px; line-height:1.6;">Embed custody and compliance rails to offer digital dollar accounts and wallets in weeks.</p>
           <div class="tags">
             <span class="badge">Crypto-native</span>
             <span class="badge">Neobanks</span>
@@ -558,7 +561,7 @@
         </div>
         <div class="card" style="border-radius:0; border:none; border-right: 1px solid var(--border);">
           <h4>Cross-Border Payments</h4>
-          <p style="color:var(--muted); margin-top:8px; line-height:1.6;">Convert between fiat and stablecoins for lower-cost, faster international transfers.</p>
+          <p style="margin-top:8px; line-height:1.6;">Convert between fiat and stablecoins for lower-cost, faster international transfers.</p>
           <div class="tags">
             <span class="badge">PSPs</span>
             <span class="badge">Remittance</span>
@@ -566,14 +569,14 @@
         </div>
         <div class="card" style="border-radius:0; border:none;">
           <h4>Global Payouts &amp; Payroll</h4>
-          <p style="color:var(--muted); margin-top:8px; line-height:1.6;">Pay contractors and remote teams instantly in stablecoins, fully compliant.</p>
+          <p style="margin-top:8px; line-height:1.6;">Pay contractors and remote teams instantly in stablecoins, fully compliant.</p>
           <div class="tags">
             <span class="badge">HR / Payroll</span>
             <span class="badge">Fintechs</span>
           </div>
         </div>
       </div>
-      <p class="anim d3 center" style="margin-top: 24px; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;">Also: Platform Treasury &middot; White-Label Stablecoins &middot; Institutional Liquidity</p>
+      <p class="anim d3 center" style="margin-top: 24px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;">Also: Platform Treasury &middot; White-Label Stablecoins &middot; Institutional Liquidity</p>
     </div>
   </div>
 
@@ -584,18 +587,18 @@
         <div class="eyebrow anim">Our Customers</div>
         <h2 class="anim d1">Hundreds of companies trust Dakota<br>to move billions in volume.</h2>
       </div>
-      <div class="grid2 anim d2" style="margin-top: 40px; gap: 1px;">
-        <div class="testimonial">
-          Dakota's infrastructure allowed us to go live with stablecoin payouts in under a week. Their compliance layer saved us months of work.
-          <cite>— Head of Engineering, Series B Fintech</cite>
+      <div class="anim d2" style="display: grid; grid-template-columns: 1fr 1fr; margin-top: 40px; border: 1px solid var(--border);">
+        <div style="padding: 36px 32px; text-align: left; border-right: 1px solid var(--border);">
+          <p style="font-family: var(--font-heading); font-size: 18px; font-style: italic; color: var(--text); line-height: 1.6;">Dakota's infrastructure allowed us to go live with stablecoin payouts in under a week. Their compliance layer saved us months of work.</p>
+          <span style="display: block; margin-top: 16px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">— Head of Engineering, Series B Fintech</span>
         </div>
-        <div class="testimonial">
-          We evaluated building in-house vs. using Dakota. The decision was obvious — they handle the complexity so we can focus on our product.
-          <cite>— CEO, Cross-Border Payments Platform</cite>
+        <div style="padding: 36px 32px; text-align: left;">
+          <p style="font-family: var(--font-heading); font-size: 18px; font-style: italic; color: var(--text); line-height: 1.6;">We evaluated building in-house vs. using Dakota. The decision was obvious — they handle the complexity so we can focus on our product.</p>
+          <span style="display: block; margin-top: 16px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">— CEO, Cross-Border Payments Platform</span>
         </div>
       </div>
       <div class="center anim d3" style="margin-top: 40px;">
-        <p style="color:var(--muted); font-size:11px; margin-bottom:16px; text-transform:uppercase; letter-spacing:0.08em;">Trusted by</p>
+        <p style="font-size:11px; margin-bottom:16px; text-transform:uppercase; letter-spacing:0.08em;">Trusted by</p>
         <div class="investor-row" style="margin-top: 0;">
           <span class="investor-name">Monad</span>
           <span class="investor-name">BRLA</span>
@@ -616,15 +619,15 @@
       <div class="grid3 anim d3" style="margin-top: 36px; border: 1px solid var(--border);">
         <div style="padding: 32px 24px; border-right: 1px solid var(--border); text-align: center;">
           <h4>U.S. MSB</h4>
-          <p style="color:var(--muted); margin-top:8px;">Registered Money Services Business with active state Money Transmitter Licenses</p>
+          <p style="margin-top:8px;">Registered Money Services Business with active state Money Transmitter Licenses</p>
         </div>
         <div style="padding: 32px 24px; border-right: 1px solid var(--border); text-align: center;">
           <h4>European Expansion</h4>
-          <p style="color:var(--muted); margin-top:8px;">Actively pursuing EMI and CASP licenses for full European market access</p>
+          <p style="margin-top:8px;">Actively pursuing EMI and CASP licenses for full European market access</p>
         </div>
         <div style="padding: 32px 24px; text-align: center;">
-          <h4>Built from Operations</h4>
-          <p style="color:var(--muted); margin-top:8px;">Built from operating a real business banking product with $100M+ stablecoin supply</p>
+          <h4>Compliance as Code</h4>
+          <p style="margin-top:8px;">Compliance built into the product as a first-class primitive, informed by operating at scale</p>
         </div>
       </div>
       <div class="badge-row anim d4">
@@ -648,19 +651,17 @@
         <div class="step">
           <div class="step-num">01</div>
           <h4>Connect</h4>
-          <p style="color:var(--muted); margin-top:8px;">Schedule a walkthrough. We'll map your use case and design your integration path.</p>
-          <span class="step-arrow">&rarr;</span>
+          <p style="margin-top:8px;">Schedule a walkthrough and map your integration path.</p>
         </div>
         <div class="step">
           <div class="step-num">02</div>
           <h4>Integrate</h4>
-          <p style="color:var(--muted); margin-top:8px;">Onboard in under 24 hours with automated KYB and compliance. Modern APIs make integration fast.</p>
-          <span class="step-arrow">&rarr;</span>
+          <p style="margin-top:8px;">Onboard in under 24 hours with automated KYB and compliance.</p>
         </div>
         <div class="step">
           <div class="step-num">03</div>
           <h4>Launch</h4>
-          <p style="color:var(--muted); margin-top:8px;">Go live with production-grade stablecoin infrastructure. Scale globally with 24/7 programmable dollar movement.</p>
+          <p style="margin-top:8px;">Go live with production-grade stablecoin infrastructure.</p>
         </div>
       </div>
     </div>
@@ -670,16 +671,31 @@
   <div class="slide" id="slide-11">
     <div class="slide-inner center">
       <div class="anim">
-        <div class="eyebrow">Let's Build</div>
+        <div class="eyebrow">Get Started</div>
       </div>
-      <h1 class="anim d1" style="margin-bottom: 24px; font-size: 44px;">Ready to move money at the<br>speed of the internet?</h1>
-      <p class="sub mx-auto anim d2" style="margin-bottom: 40px;">Join 700+ companies using Dakota's regulated infrastructure to power global stablecoin operations.</p>
-      <div class="anim d3" style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
-        <a class="btn btn-secondary" href="https://docs.dakota.xyz" target="_blank">View Docs</a>
-      </div>
-      <div class="anim d4" style="margin-top: 48px; color: var(--muted); font-size: 12px; letter-spacing: 0.05em;">
-        <p>sales@dakota.com</p>
-        <p style="margin-top: 4px;">dakota.xyz</p>
+      <h1 class="anim d1" style="margin-bottom: 24px;">Ready to move money at the<br>speed of the internet?</h1>
+      <p class="sub mx-auto anim d2" style="margin-bottom: 48px;">Choose the path that fits your team.</p>
+      <div class="anim d3" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 800px; margin: 0 auto;">
+        <div style="border: 1px solid var(--border); padding: 40px 32px; text-align: left;">
+          <h3 style="margin-bottom: 12px;">Self-Serve</h3>
+          <p style="font-size: 14px; line-height: 1.7; margin-bottom: 24px;">Sign up, purchase credits, and start moving money on your own.</p>
+          <ul class="cta-list">
+            <li>Self-serve onboarding</li>
+            <li>Pay-as-you-go credits</li>
+            <li>Get up and running in 24 hrs</li>
+          </ul>
+          <a class="btn" style="background: var(--white); color: var(--bg); border: 1px solid var(--white);" href="https://app.dakota.xyz" target="_blank">Get Started</a>
+        </div>
+        <div style="border: 1px solid var(--border); padding: 40px 32px; text-align: left;">
+          <h3 style="margin-bottom: 12px;">Enterprise</h3>
+          <p style="font-size: 14px; line-height: 1.7; margin-bottom: 24px;">Custom integration, dedicated support, and volume pricing.</p>
+          <ul class="cta-list">
+            <li>Enterprise pricing</li>
+            <li>Dedicated support</li>
+            <li>SLAs &amp; compliance review</li>
+          </ul>
+          <a class="btn btn-secondary" href="https://docs.dakota.xyz" target="_blank">View Docs</a>
+        </div>
       </div>
     </div>
   </div>
